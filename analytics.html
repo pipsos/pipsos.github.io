@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body bgcolor="#C2C2F0">
+<body background="http://orig03.deviantart.net/fd4f/f/2010/068/0/4/denim_texture_by_artbox_da.jpg">
+<style>
+
+html, body {
+  width: 90%;
+  height: 90%;
+  margin: 0;
+  padding: 0;
+
+  }
+
+.node circle {
+  cursor: pointer;
+  stroke: none;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font: 18px;
+  font-family: "monospace";
+  pointer-events: none;
+  padding: 30px;
+}
+
+line.link {
+  fill: none;
+  stroke: #0F1A05;
+  stroke-width: 1.2px;
+}
+
+</style>
+
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script>
+
+var width = 900, height = 600;
+
+
+//function resize() {
+//    width = window.innerWidth, height = window.innerHeight;
+//    svg.attr("width", width).attr("height", height);
+//    force.size([width, height]).resume();
+//} 
+	
+var	radius=0.1;
+
+var ldist=50;
+
+var svg = d3.select("#viz").append("svg")
+            .attr("id", "playgraph")
+             //better to keep the viewBox dimensions with variables
+            .attr("viewBox", "0 0 " + width + " " + height )
+            .attr("preserveAspectRatio", "xMidYMid meet");
+ 			
+			
+var emptyURL = "https://www.dropbox.com/s/76u6lx8fm7n7xel/empty2.png?dl=1";
+	
+var radius = d3.scale.sqrt()
+    .range([0, 3]);
+	
+
+var force = d3.layout.force()
+	.linkStrength(0.3)
+	.charge(-1500)
+    .gravity(.2)
+    .size([width, height])
+	.linkDistance(function(d) {ldist=30;
+	return ldist;})
+	.start();
+
+	
+
+//var allnode =  flatten(root);
+//for (var i=0;i<allnode.length;i++){click(allnode[i])};
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var link = svg.selectAll(".link"),
+    node = svg.selectAll(".node");
+
+root={
+ "name": "analytics", "ll":2,"img":emptyURL,
+ "children": [
+  {
+   "name": "clive", "group":"#3D991F", "ll":1,"img":emptyURL,
+   "children": [
+    {
+     "name": "contact", "group":"#3D991F","given":1, "size": 7000,"img":emptyURL,
+     "children": [
+      {"name": "clive.frostick@ipsos.com", "group":"#3D991F", "size": 4000, "ll":3,"img":emptyURL},
+      {"name": "+4402088618755", "group":"#3D991F", "size": 4000, "ll":3,"img":emptyURL}
+     ]
+    },
+    {
+     "name": "\f \f \f \f Clive Frostick","jobtitle":"\f \f \f \f Senior Director", "group":"#3D991F","size":1000, "img":"https://www.dropbox.com/s/41uex4w63gyxgbs/clive.png?dl=1",
+     "children": [
+      {"name": "BetweennessCentrality", "group":"#3D991F", "size": 3534, "ll":4,"img":emptyURL},
+      {"name": "LinkDistance", "group":"#3D991F", "size": 5731, "ll":4,"img":emptyURL},
+      {"name": "MaxFlowMinCut", "group":"#3D991F", "size": 7840, "ll":4,"img":emptyURL},
+      {"name": "ShortestPaths", "group":"#3D991F", "size": 5914, "ll":4,"img":emptyURL},
+      {"name": "SpanningTree", "group":"#3D991F", "size": 3416, "ll":4,"img":emptyURL}
+     ]
+    },
+    {
+     "name": "specialisms", "group":"#3D991F","size":"2000","img":emptyURL,
+     "children": [
+      {"name": "", "group":"#3D991F", "size": 7074, "ll":1,"img":emptyURL}
+     ]
+    }
+   ]
+  },
+  {"name": "pawel", "group":"#CD9B1D", "ll":10,"img":emptyURL,"children":[
+	{"name": "\f \f \f \f Pawel Paluchowski","jobtitle":"\f \f \f \f Statistician", "size": 3534, "ll":4,"img":"https://www.dropbox.com/s/h6rubumcq726y8e/pawel.png?dl=1"}
+  ]
+  },
+  {"name": "zoran", "group":"#343480", "ll":5,"img":emptyURL,"children":[
+	{"name": "\f \f \f \f Zoran Orlic","jobtitle":"\f \f \f \f Senior Data Analyst", "size": 3534, "ll":4,"img":"https://www.dropbox.com/s/br38juclxtrxtdj/zoran.png?dl=1"}
+  ]
+  },
+  {"name": "ben", "group":"#6B0024", "ll":0,"img":emptyURL,"children":[
+	{"name": "\f \f \f \f Ben Hornsby","jobtitle":"\f \f \f \f Marketing Sciences Consultant", "size": 3534, "ll":4,"img":"https://www.dropbox.com/s/pn83o0l62bzupe7/ben.png?dl=1"}
+  ]
+  },
+  {"name": "sarah", "group":"#007A7A", "ll":1,"img":emptyURL,"children":[
+	{"name": "\f \f \f \f Sarah Tipping","jobtitle":"\f \f \f \f Statistician", "size": 3534, "ll":4,"img":"https://www.dropbox.com/s/p8k6e3k82w8ipuf/sarah.png?dl=1"}
+  ]
+  },
+ ]
+};
+
+// root.children.forEach(toggleAll);
+update();
+
+var collapseMe = flatten(root);
+for(var j = 0; j< collapseMe.length; j++){toggle(collapseMe[j])};
+//click(root.children[1]);
+update(root);
+
+function update() {
+  var nodes = flatten(root),
+      links = d3.layout.tree().links(nodes);
+	
+
+  // Restart the force layout.
+  force
+      .nodes(nodes)
+      .links(links)
+	  .on("tick", tick)
+      .start();
+  
+	
+  // Update links.
+  link = link.data(links, function(d) { return d.target.id; });
+
+  link.exit().remove();
+
+  link.enter().insert("line", ".node")
+      .attr("class", "link")
+	  .attr("x1", function(d) { return d.source.x; })
+      .attr("y1", function(d) { return d.source.y; })
+      .attr("x2", function(d) { return d.target.x; })
+      .attr("y2", function(d) { return d.target.y; });
+
+  // Update nodes.
+  node = node.data(nodes, function(d) { return d.id; });
+
+  node.exit().remove();
+ 
+
+  var nodeEnter = node.enter().append("g")
+      .attr("class", "node")
+      .on("click", click)
+	  .style("fill", function(d) { return d.group; })
+      .call(force.drag);
+
+  nodeEnter.append("circle")
+      .attr("r", function(d) { return Math.sqrt(d.size) / 10 || 10; });
+	  
+  // Append images
+var images = nodeEnter.append("svg:image")
+      .attr("xlink:href",  function(d) {return d.img;})
+		.attr("class", "circle")
+       .attr("x", function(d) { return -40;})
+       .attr("y", function(d) { return -40;})
+       .attr("height", 80)
+       .attr("width", 80);
+		
+
+ 
+	  
+
+  nodeEnter.append("text")
+      .attr("dy", "0.35em")
+	  .attr("dx", ".7em")
+	  .style("font-family", "monospace")
+      .attr("font-size", "16px")
+	  .attr("fill", "#3B3B3B")
+      .text(function(d) { return d.name; });
+	  
+  nodeEnter.append("text")
+      .attr("dy", "1.5em")
+	  .attr("dx", "1.6em")
+	  .style("font-family", "monospace")
+      .attr("font-size", "12px")
+	  .attr("fill", "#3B3B3B")
+      .text(function(d) { return d.jobtitle; });
+
+  node.select("circle")
+      .style("fill", function (d) { return d.group; });
+}
+
+function tick() {
+node.attr("cx", function(d) { return d.x = Math.max(15, Math.min(width - 15, d.x)); })
+    .attr("cy", function(d) { return d.y = Math.max(15, Math.min(height - 15, d.y)); });
+
+link.attr("x1", function(d) { return d.source.x; })
+    .attr("y1", function(d) { return d.source.y; })
+    .attr("x2", function(d) { return d.target.x; })
+    .attr("y2", function(d) { return d.target.y; });
+
+node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+	 
+
+  
+
+}
+
+function color(d) {
+  return d._children ? "#3182bd" // collapsed package
+      : d.children ? "#c6dbef" // expanded package
+      : "#fd8d3c"; // leaf node
+}
+
+
+// Toggle children on click.
+function click(d) {
+  if (d3.event.defaultPrevented) return; // ignore drag
+  if (d.children) {
+    d._children = d.children;
+    d.children = null;
+  } else {
+    d.children = d._children;
+    d._children = null;
+  }
+  update();
+}
+
+// Toggle children.
+function toggle(d) {
+  if (d.children) {
+    d._children = d.children;
+    d.children = null;
+  } else {
+    d.children = d._children;
+    d._children = null;
+  }
+}
+
+
+
+// Returns a list of all nodes under the root.
+function flatten(root) {
+  var nodes = [], i = 0;
+	
+
+  function recurse(node) {
+    if (node.children) node.children.forEach(recurse);
+    if (!node.id) node.id = ++i;
+    nodes.push(node);
+  }
+  
+//window.addEventListener('resize', resize); 
+
+//function resize() {
+//    width = window.innerWidth, height = window.innerHeight;
+//    svg.attr("width", width).attr("height", height);
+//    force.size([width, height]).resume();
+//}
+
+  recurse(root);
+  return nodes;
+}
+
+
+//window.addEventListener('resize', resize); 
+
+   
+
+
+
+</script>
