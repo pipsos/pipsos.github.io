@@ -266,7 +266,7 @@ function drawName(name, letterColors) {
         if (document.alphabet.hasOwnProperty(cc_hex)) {
 
     // definition of our variable
-    var fontSizeMultiplier = 0.5;
+    var fontSizeMultiplier = 0.6;
 
     var chr_data = document.alphabet[cc_hex].P;
     var bc = letterColors[ix % letterColors.length];
@@ -280,7 +280,7 @@ function drawName(name, letterColors) {
             point[1] * fontSizeMultiplier,
 
             0.0,
-            point[2]*0.6,
+            point[2]*0.7,
             makeColor(bc,point[3])));
     }
 
