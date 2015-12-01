@@ -175,7 +175,7 @@ function initEventListeners() {
  
 function updateCanvasDimensions() {
     canvas.attr({
-        height: 300,
+        height: 400,
         width: 1000
     });
     canvasWidth = canvas.width();
@@ -266,7 +266,7 @@ function drawName(name, letterColors) {
         if (document.alphabet.hasOwnProperty(cc_hex)) {
 
     // definition of our variable
-    var fontSizeMultiplier = 0.6;
+    var fontSizeMultiplier = 0.58;
 
     var chr_data = document.alphabet[cc_hex].P;
     var bc = letterColors[ix % letterColors.length];
