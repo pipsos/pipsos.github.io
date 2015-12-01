@@ -175,7 +175,7 @@ function initEventListeners() {
  
 function updateCanvasDimensions() {
     canvas.attr({
-        height: 280,
+        height: 350,
         width: 1000
     });
     canvasWidth = canvas.width();
@@ -280,7 +280,7 @@ function drawName(name, letterColors) {
             point[1] * fontSizeMultiplier,
 
             0.0,
-            point[2]*0.3,
+            point[2]*0.65,
             makeColor(bc,point[3])));
     }
 
