@@ -175,7 +175,7 @@ function initEventListeners() {
  
 function updateCanvasDimensions() {
     canvas.attr({
-        height: 450,
+        height: 400,
         width: 1000
     });
     canvasWidth = canvas.width();
@@ -280,7 +280,7 @@ function drawName(name, letterColors) {
             point[1] * fontSizeMultiplier,
 
             0.0,
-            point[2]*0.64,
+            point[2]*0.6,
             makeColor(bc,point[3])));
     }
 
@@ -351,7 +351,7 @@ setTimeout(updateCanvasDimensions, 30);
 	var blue = [196, 77, 55];
 	var purple = [280, 50, 60];
 
-	var myName = " Ipsos MORI Analytics";
+	var myName = "Ipsos MORI Analytics";
 	letterColors=[ipsos1,ipsos2,ipsos3]
 	if(2>1){bubbleShape="circle";} else{
 		bubbleShape="square";}
